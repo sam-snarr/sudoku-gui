@@ -89,12 +89,22 @@ class board():
                 c.is_clicked = True
             else:
                 c.is_clicked = False
-        self.draw_board()
+        #self.draw_board()
     
-    def change_value(self, cube_number, new_value):
+    def change_guess(self, cube_number, new_value):
         c = self.cube_array[cube_number]
-        c.value = new_value
-        self.draw_board()
+        c.guess = new_value
+        #self.draw_board()
+    
+    def change_value(self, cube_number, correct_matrix):
+        c = self.cube_array[cube_number]
+        if c.guess == correct_matrix[c.row][c.col]:
+            c.value = c.guess
+            c.guess = 0
+        else:
+            c.guess = 0
+
+        #self.draw_board()
     
     def check_value(self, cube_number, correct_matrix, key):
         c = self.cube_array[cube_number]
@@ -201,10 +211,7 @@ solve_board(answer_matrix)
 print_board(sudoku_matrix)
 print_board(answer_matrix)
 
-
 guess_matrix = [[0,0,0,0,0,0,0,0,0,0] for i in range(9)]
-
-
 
 pygame.init()
 
@@ -244,13 +251,16 @@ while True:
                 key = 8
             elif key == pygame.K_9:
                 key = 9
+            elif key == pygame.K_RETURN:
+                key = 'ENTER'
             else: 
                 key = None
 
-        if key != None:
-            if board.check_value(cube_number, answer_matrix, key):
-                board.change_value(cube_number, key)
+        if isinstance(key, int):
+            board.change_guess(cube_number, key)
             key = None
+        if key == 'ENTER':
+            board.change_value(cube_number, answer_matrix)
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             position = pygame.mouse.get_pos()
@@ -259,8 +269,8 @@ while True:
                 board.highlight_cube(cube_number)
                 key = None
             
-               
-
+            
+    board.draw_board()
     pygame.display.update()
                 
         
