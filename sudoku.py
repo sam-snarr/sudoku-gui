@@ -96,20 +96,120 @@ class board():
         c.value = new_value
         self.draw_board()
     
+    def check_value(self, cube_number, correct_matrix, key):
+        c = self.cube_array[cube_number]
+        if key == correct_matrix[c.row][c.col]:
+            return True
+        else:
+            return False
+
+
+############ end classes ################    
+
+
+def is_valid(matrix, row_number, col_number, value):
+    if valid_box(matrix, row_number, col_number, value) and valid_col(matrix, col_number, value) and valid_row(matrix, row_number, value):
+        return True
+    else:
+        return False
+
+def valid_row(matrix, row_number, value):
+    for i in range(9):
+        val = matrix[row_number][i]
+        if val == value:
+            return False
+    return True
+
+def valid_col(matrix, col_number, value):
+    for i in range(9):
+        val = matrix[i][col_number]
+        if val == value:
+            return False
+    return True
+
+def valid_box(matrix, row_number, col_number, value):
+    row_number = (row_number//3) * 3
+    col_number = (col_number//3) * 3
+    for i in range(3):
+        for j in range(3):
+            val = matrix[i+row_number][j+col_number]
+            if val == value:
+                return False
+    return True
+
+def find_empty(matrix):
+    for i in range(9):
+        for j in range(9):
+            if matrix[i][j] == 0:
+                return [i,j]
+    return None
+
+def board_completed(matrix):
+    for i in range(9):
+        for j in range(9):
+            if matrix[i][j] == 0:
+                return False
+    return True
+
+def solve_board(matrix):
+    
+    row_col = find_empty(matrix)
+    if row_col:
+        row_number = row_col[0]
+        col_number = row_col[1]
+    else:
+        return True
+
+    for value in range(1,10):
+        if is_valid(matrix, row_number, col_number, value):
+            matrix[row_number][col_number] = value
+            if solve_board(matrix):
+                 return True
+            
+            matrix[row_number][col_number] = 0
+    return False
+
+def print_board(matrix):
+    print('printing board')
+    for i in range(len(matrix)):
+        print(matrix[i])
     
 ##########################################################################################################
-row = [1,2,3,4,5,6,7,8,9,0]
-sudoku_matrix = []
-for i in range(9):
-    row = random.sample(row, k=9)
-    sudoku_matrix.append(row)
+
+sudoku_matrix = [[3,0,6,5,0,8,4,0,0], 
+                 [5,2,0,0,0,0,0,0,0], 
+                 [0,8,7,0,0,0,0,3,1], 
+                 [0,0,3,0,1,0,0,8,0], 
+                 [9,0,0,8,6,3,0,0,5], 
+                 [0,5,0,0,9,0,6,0,0], 
+                 [1,3,0,0,0,0,2,5,0], 
+                 [0,0,0,0,0,0,0,7,4], 
+                 [0,0,5,2,0,6,3,0,0]] 
+
+answer_matrix = [[3,0,6,5,0,8,4,0,0], 
+                 [5,2,0,0,0,0,0,0,0], 
+                 [0,8,7,0,0,0,0,3,1], 
+                 [0,0,3,0,1,0,0,8,0], 
+                 [9,0,0,8,6,3,0,0,5], 
+                 [0,5,0,0,9,0,6,0,0], 
+                 [1,3,0,0,0,0,2,5,0], 
+                 [0,0,0,0,0,0,0,7,4], 
+                 [0,0,5,2,0,6,3,0,0]] 
+
+solve_board(answer_matrix)
+
+print_board(sudoku_matrix)
+print_board(answer_matrix)
+
 
 guess_matrix = [[0,0,0,0,0,0,0,0,0,0] for i in range(9)]
 
+
+
 pygame.init()
 
-width = 1080
-height = 720
+width = 720
+height = 480
 surface = pygame.display.set_mode((width, height))
 surface.fill((255,255,255))
 
@@ -146,8 +246,10 @@ while True:
                 key = 9
             else: 
                 key = None
+
         if key != None:
-            board.change_value(cube_number, key)
+            if board.check_value(cube_number, answer_matrix, key):
+                board.change_value(cube_number, key)
             key = None
 
         if event.type == pygame.MOUSEBUTTONDOWN:
