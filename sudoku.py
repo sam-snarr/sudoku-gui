@@ -59,6 +59,17 @@ class board():
 
     def draw_board(self):
         self.surface.fill((255,255,255))
+        drawnHline = False
+        drawnVline = False
+
+        # vertical thick lines
+        pygame.draw.line(self.surface, self.color, (self.offset+self.width*6, self.offset), (self.offset+self.width*6, self.offset+self.width*9), 4)
+        pygame.draw.line(self.surface, self.color, (self.offset+self.width*3, self.offset), (self.offset+self.width*3, self.offset+self.width*9), 4)
+
+        # horizontal thick lines
+        pygame.draw.line(self.surface, self.color, (self.offset, self.offset+self.width*3), (self.offset+self.width*9, self.offset+self.width*3), 4)
+        pygame.draw.line(self.surface, self.color, (self.offset, self.offset+self.width*6), (self.offset+self.width*9, self.offset+self.width*6), 4)
+
         for c in self.cube_array:
             c.draw_cube(self.surface)
             c.draw_center_number(self.surface)
@@ -86,9 +97,7 @@ class board():
         self.draw_board()
     
     
-
-
-###########################################################################################################
+##########################################################################################################
 row = [1,2,3,4,5,6,7,8,9,0]
 sudoku_matrix = []
 for i in range(9):
@@ -109,8 +118,6 @@ key = None
 board = board(surface)
 board.add_cubes(sudoku_matrix, guess_matrix)
 board.draw_board()
-
-pygame.display.update()
 
 while True:
     
