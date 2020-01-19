@@ -30,9 +30,9 @@ class cube():
 
     def draw_upper_left_number(self, surface):
         if self.guess != 0:
-            myFont = pygame.font.SysFont("comicsans", 25)
+            myFont = pygame.font.SysFont("comicsans", 27)
             text = myFont.render(str(self.guess), 1, (0,0,0))
-            surface.blit(text, self.rect_coords)
+            surface.blit(text, (self.x_coord+2, self.y_coord+2, self.width, self.width))
     
     def draw_center_number(self, surface):
         if self.value != 0:
