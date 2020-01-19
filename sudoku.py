@@ -41,8 +41,6 @@ class cube():
             text_rect = text.get_rect(center=self.center_coords)
             surface.blit(text, text_rect)
     
-
-
 class board():
     def __init__(self, surface, color=(0,0,0)):
         self.surface = surface
