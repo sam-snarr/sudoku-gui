@@ -206,9 +206,6 @@ answer_matrix = [[3,0,6,5,0,8,4,0,0],
 
 solve_board(answer_matrix)
 
-print_board(sudoku_matrix)
-print_board(answer_matrix)
-
 guess_matrix = [[0,0,0,0,0,0,0,0,0,0] for i in range(9)]
 
 pygame.init()
