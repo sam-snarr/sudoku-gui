@@ -2,4 +2,4 @@
 
 Uses the backtracking algorithm to solve the puzzle.
 
-![picture](sudoku example.png)
+![picture](sudoku_example.png)
