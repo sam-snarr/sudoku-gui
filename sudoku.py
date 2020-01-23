@@ -97,6 +97,7 @@ class board():
     def change_value(self, cube_number, correct_matrix):
         c = self.cube_array[cube_number]
         if c.guess == correct_matrix[c.row][c.col]:
+            c.highlighted_color = (0,255,0)
             c.value = c.guess
             c.guess = 0
         else:
@@ -210,9 +211,11 @@ guess_matrix = [[0,0,0,0,0,0,0,0,0,0] for i in range(9)]
 
 pygame.init()
 
-width = 720
+width = 440
 height = 480
 surface = pygame.display.set_mode((width, height))
+
+pygame.display.set_caption('Sudoku')
 surface.fill((255,255,255))
 
 key = None
